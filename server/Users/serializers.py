@@ -1,19 +1,31 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
+from .models import UserProfile
+
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'email','password']
+        fields = ['username', 'email', 'password']
         # exclude = ['password'] is the same as fields = ['username', 'email']
+
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
         fields = ['url', 'name']
 
+
+class ProfileSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = '__all__'
+
+
 class RegistrationSerializer(serializers.ModelSerializer):
-    password2 = serializers.CharField(style={'input_type': 'password'},write_only=True)
+    password2 = serializers.CharField(
+        style={'input_type': 'password'}, write_only=True)
+
     class Meta:
         model = User
         fields = ['email', 'username', 'password', 'password2']
@@ -23,8 +35,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     def save(self):
         user = User(
-            email = self.validated_data['email'],
-            username = self.validated_data['username']
+            email=self.validated_data['email'],
+            username=self.validated_data['username']
         )
         password = self.validated_data['password']
         password2 = self.validated_data['password2']

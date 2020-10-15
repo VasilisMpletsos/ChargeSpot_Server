@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '1$!hx8xryoiok(7b*sgek=@0x!)@xw8nwvk-@(#7ae^prml@0)'
+SECRET_KEY = '5ax#f=bbn@2#r-%p8+b&+jo@w_t6j=3rxks9cnf_(1ruwyoasc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users',
     'rest_framework',
     'django_filters',
 ]
@@ -121,7 +122,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Setting for REST API
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -139,10 +139,9 @@ REST_FRAMEWORK = {
         'user': '1000/day',
         'user_min': '20/minute',
     },
-    'DEFAULT_PARSER_CLASSES':[
+    'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
         'rest_framework.parsers.FormParser',
         'rest_framework.parsers.MultiPartParser'
     ],
 }
-
