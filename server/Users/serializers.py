@@ -25,10 +25,17 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
 class RegistrationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(
         style={'input_type': 'password'}, write_only=True)
+    birth = serializers.DateField()
+    nickname = serializers.CharField()
+    prefersDark = serializers.BooleanField(default=True)
+    available = serializers.BooleanField(default=True)
+    gender = serializers.CharField()
+    country = serializers.CharField()
 
     class Meta:
         model = User
-        fields = ['email', 'username', 'password', 'password2']
+        fields = ['email', 'username', 'password', 'password2', 'birth',
+                  'nickname', 'prefersDark', 'available', 'gender', 'country']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -44,4 +51,14 @@ class RegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Passwords should match")
         user.set_password(password)
         user.save()
+        profile = UserProfile(
+            user=user,
+            birth=self.validated_data['birth'],
+            nickname=self.validated_data['nickname'],
+            prefersDark=self.validated_data['prefersDark'],
+            country=self.validated_data['country'],
+            available=self.validated_data['available'],
+            gender=self.validated_data['gender']
+        )
+        profile.save()
         return user
