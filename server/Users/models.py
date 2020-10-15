@@ -5,9 +5,9 @@ from django.contrib.auth.models import User
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, related_name='profile', on_delete=models.CASCADE)
     birth = models.DateField(auto_now=False, auto_now_add=False)
-    nickname = models.CharField(max_length=40, default='')
     prefersDark = models.BooleanField(default='False')
     available = models.BooleanField(default=True)
     gender = models.CharField(max_length=20, default='')

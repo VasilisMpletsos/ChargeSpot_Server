@@ -5,14 +5,22 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.generics import ListCreateAPIView
 from .models import UserProfile
 
 # Create your views here.
 
 
+class MyUserPermissions(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        # check if user is owner
+        return request.user == obj
+
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
+    permission_classes = (MyUserPermissions,)
 
 
 class GroupViewSet(viewsets.ModelViewSet):

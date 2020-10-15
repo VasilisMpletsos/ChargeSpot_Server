@@ -4,16 +4,25 @@ from .models import UserProfile
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    profile = serializers.HyperlinkedRelatedField(
+        queryset=UserProfile.objects.all(),
+        view_name='userprofile-detail'
+    )
+
     class Meta:
         model = User
-        fields = ['username', 'email', 'password']
+        fields = ['username', 'email', 'profile', 'password']
         # exclude = ['password'] is the same as fields = ['username', 'email']
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
         fields = ['url', 'name']
+        read_only_fields = ['__all__']
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
@@ -26,7 +35,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(
         style={'input_type': 'password'}, write_only=True)
     birth = serializers.DateField()
-    nickname = serializers.CharField()
     prefersDark = serializers.BooleanField(default=True)
     available = serializers.BooleanField(default=True)
     gender = serializers.CharField()
@@ -37,7 +45,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
         fields = ['email', 'username', 'password', 'password2', 'birth',
                   'nickname', 'prefersDark', 'available', 'gender', 'country']
         extra_kwargs = {
-            'password': {'write_only': True}
+            'password': {'write_only': True},
+            'password2': {'write_only': True}
         }
 
     def save(self):
@@ -54,7 +63,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
         profile = UserProfile(
             user=user,
             birth=self.validated_data['birth'],
-            nickname=self.validated_data['nickname'],
             prefersDark=self.validated_data['prefersDark'],
             country=self.validated_data['country'],
             available=self.validated_data['available'],
