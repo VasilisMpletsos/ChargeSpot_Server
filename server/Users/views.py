@@ -13,26 +13,31 @@ from .models import UserProfile
 
 class MyUserPermissions(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        # check if user is owner
-        return request.user == obj
+        if request.method in permissions.SAFE_METHODS:
+            # Check permissions for read-only request
+            return True
+        else:
+            # Check if user is owner, so he can do
+            # WRITE operations
+            return request.user == obj
 
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    permission_classes = (MyUserPermissions,)
+    permission_classes = [MyUserPermissions]
 
 
 class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser]
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [MyUserPermissions]
 
 
 class RegisterView(APIView):
