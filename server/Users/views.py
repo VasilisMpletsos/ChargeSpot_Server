@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView
 from .models import UserProfile, ChargeSpot, ProcessorPoint, Management
 from .permissions import UserIsOwnerPermissions, UserOnlyViewPermissions, UserIsOwnerUserPermissions
+from rest_framework import generics
 
 # Create your views here.
 
@@ -65,3 +66,15 @@ class RegisterView(APIView):
         else:
             data = serializer.errors
         return Response(data)
+
+
+class GetUserView(generics.ListAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases for
+        the user as determined by the username portion of the URL.
+        """
+        return User.objects.filter(username=self.request.user)

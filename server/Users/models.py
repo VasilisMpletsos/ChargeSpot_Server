@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from uuid import uuid4
 import math
+from decimal import Decimal
 
 # Create your models here.
 
@@ -14,6 +15,8 @@ class UserProfile(models.Model):
     available = models.BooleanField(default=True)
     gender = models.CharField(max_length=20, default='')
     country = models.CharField(max_length=20, default='')
+    account = models.DecimalField(
+        max_digits=4, decimal_places=2, default=Decimal('00.00'))
 
     def __str__(self):
         return self.user.username
