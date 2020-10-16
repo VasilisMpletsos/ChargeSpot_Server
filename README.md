@@ -4,5 +4,6 @@ ChargeSpot Server will be the backend for the ChargeSpot App. It is going to be 
 
 ## To Do:
 
-- Add Generic Views and setvpermission so anyone can only PUT his data!
-- Add Products Model and etc.
+- Add Credit Card Model
+- Add Advertiser Model
+- Add Advertisments Model
