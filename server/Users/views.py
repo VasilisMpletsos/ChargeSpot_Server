@@ -7,53 +7,16 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView
 from .models import UserProfile, ChargeSpot, ProcessorPoint, Management
-from rest_condition import Or
+from .permissions import UserIsOwnerPermissions, UserOnlyViewPermissions, UserIsOwnerUserPermissions
 
 # Create your views here.
-
-
-class UseIsOwnerPermissions(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
-            # Read-only request allowed
-            return True
-        else:
-            # Check if user is owner, so he can do
-            # WRITE operations
-            return request.user == obj
-
-    def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS:
-            # Read-only request allowed
-            return True
-        else:
-            # Write requests prohibited
-            return False
-
-
-class UserOnlyViewPermissions(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
-            # Read-only request allowed
-            return True
-        else:
-            # Check if user is owner, so he can do
-            # WRITE operations
-            return False
-
-    def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS:
-            # Read-only request allowed
-            return True
-        else:
-            # Write requests prohibited
-            return False
 
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    permission_classes = [Or(UseIsOwnerPermissions, permissions.IsAdminUser)]
+    permission_classes = [UserIsOwnerUserPermissions &
+                          permissions.IsAuthenticated]
 
 
 class GroupViewSet(viewsets.ModelViewSet):
@@ -65,19 +28,22 @@ class GroupViewSet(viewsets.ModelViewSet):
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = [Or(UseIsOwnerPermissions, permissions.IsAdminUser)]
+    permission_classes = [UserIsOwnerPermissions &
+                          permissions.IsAuthenticated]
 
 
 class ChargeSpotViewSet(viewsets.ModelViewSet):
     queryset = ChargeSpot.objects.all()
     serializer_class = ChargeSpotSerializer
-    permission_classes = [Or(UserOnlyViewPermissions, permissions.IsAdminUser)]
+    permission_classes = [UserOnlyViewPermissions &
+                          permissions.IsAuthenticated]
 
 
 class ProcessorPointViewSet(viewsets.ModelViewSet):
     queryset = ProcessorPoint.objects.all()
     serializer_class = ProcessorPointSerializer
-    permission_classes = [Or(UserOnlyViewPermissions, permissions.IsAdminUser)]
+    permission_classes = [UserOnlyViewPermissions &
+                          permissions.IsAuthenticated]
 
 
 class ManagementrViewSet(viewsets.ModelViewSet):
