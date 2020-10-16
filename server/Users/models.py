@@ -39,3 +39,12 @@ class ProcessorPoint(models.Model):
 
     def __str__(self):
         return self.belongs.name
+
+
+class Management(models.Model):
+    belongs = models.OneToOneField(ChargeSpot, on_delete=models.CASCADE)
+    batteryVolt = models.DecimalField(max_digits=4, decimal_places=2)
+    fullVolt = models.DecimalField(max_digits=4, decimal_places=2)
+    panels = models.IntegerField()
+    panelsVolt = models.DecimalField(max_digits=4, decimal_places=2)
+    panelsFullVolt = models.DecimalField(max_digits=4, decimal_places=2)

@@ -1,12 +1,12 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import filters, permissions, viewsets
-from .serializers import UserSerializer, GroupSerializer, RegistrationSerializer, ProfileSerializer, ChargeSpotSerializer, ProcessorPointSerializer
+from .serializers import UserSerializer, GroupSerializer, RegistrationSerializer, ProfileSerializer, ChargeSpotSerializer, ProcessorPointSerializer, ManagementSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView
-from .models import UserProfile, ChargeSpot, ProcessorPoint
+from .models import UserProfile, ChargeSpot, ProcessorPoint, Management
 from rest_condition import Or
 
 # Create your views here.
@@ -78,6 +78,12 @@ class ProcessorPointViewSet(viewsets.ModelViewSet):
     queryset = ProcessorPoint.objects.all()
     serializer_class = ProcessorPointSerializer
     permission_classes = [Or(UserOnlyViewPermissions, permissions.IsAdminUser)]
+
+
+class ManagementrViewSet(viewsets.ModelViewSet):
+    queryset = Management.objects.all()
+    serializer_class = ManagementSerializer
+    permission_classes = [permissions.IsAdminUser]
 
 
 class RegisterView(APIView):

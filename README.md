@@ -5,5 +5,8 @@ ChargeSpot Server will be the backend for the ChargeSpot App. It is going to be 
 ## To Do:
 
 - Add Credit Card Model
+
+Make Seperate Project:
+
 - Add Advertiser Model
 - Add Advertisments Model

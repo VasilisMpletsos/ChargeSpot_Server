@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from .models import UserProfile, ChargeSpot, ProcessorPoint
+from .models import UserProfile, ChargeSpot, ProcessorPoint, Management
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -47,6 +47,12 @@ class ChargeSpotSerializer(serializers.HyperlinkedModelSerializer):
 class ProcessorPointSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ProcessorPoint
+        fields = '__all__'
+
+
+class ManagementSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Management
         fields = '__all__'
 
 

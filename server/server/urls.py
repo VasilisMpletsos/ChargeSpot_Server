@@ -10,6 +10,7 @@ router.register(r'groups', views.GroupViewSet)
 router.register(r'profiles', views.ProfileViewSet)
 router.register(r'charge_spots', views.ChargeSpotViewSet)
 router.register(r'processor_points', views.ProcessorPointViewSet)
+router.register(r'management', views.ManagementrViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
