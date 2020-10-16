@@ -4,6 +4,7 @@ ChargeSpot Server will be the backend for the ChargeSpot App. It is going to be 
 
 ## To Do:
 
+- Make Emails Unique and not usernames
 - Add Credit Card Model
 
 Make Seperate Project:

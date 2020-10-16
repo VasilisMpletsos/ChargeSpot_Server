@@ -11,7 +11,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'profile', 'password']
+        fields = ['url', 'username', 'email', 'profile', 'password']
         # exclude = ['password'] is the same as fields = ['username', 'email']
         extra_kwargs = {
             'password': {'write_only': True}
@@ -40,7 +40,7 @@ class ChargeSpotSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = ChargeSpot
-        fields = ['name', 'locationText', 'locationUrl',
+        fields = ['url', 'name', 'locationText', 'locationUrl',
                   'typeA', 'typeB', 'typeC', 'wheelchair', 'processors']
 
 
@@ -68,7 +68,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['email', 'username', 'password', 'password2', 'birth',
-                  'nickname', 'prefersDark', 'available', 'gender', 'country']
+                  'prefersDark', 'available', 'gender', 'country']
         extra_kwargs = {
             'password': {'write_only': True},
             'password2': {'write_only': True}
