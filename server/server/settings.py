@@ -137,9 +137,9 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle',
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '20/day',
-        'user': '1000/day',
-        'user_min': '20/minute',
+        'anon': '200/day',
+        'user': '10000/day',
+        'user_min': '200/minute',
     },
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
