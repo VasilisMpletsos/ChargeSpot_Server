@@ -40,6 +40,8 @@ class ChargeHistory(models.Model):
     money = models.DecimalField(
         max_digits=4, decimal_places=2, default=Decimal('00.00'))
     duration = models.TimeField(auto_now=False, auto_now_add=False)
+    location = models.ForeignKey(
+        ChargeSpot, on_delete=models.CASCADE, default=1)
 
     class Meta:
         unique_together = ['userHistory', 'date', 'duration']
