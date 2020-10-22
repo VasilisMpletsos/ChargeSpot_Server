@@ -33,6 +33,22 @@ class ChargeSpot(models.Model):
     wheelchair = models.IntegerField()
 
 
+class ChargeHistory(models.Model):
+    userHistory = models.ForeignKey(
+        User, related_name='history', on_delete=models.CASCADE)
+    date = models.DateField(auto_now=False, auto_now_add=False)
+    money = models.DecimalField(
+        max_digits=4, decimal_places=2, default=Decimal('00.00'))
+    duration = models.TimeField(auto_now=False, auto_now_add=False)
+
+    class Meta:
+        unique_together = ['userHistory', 'date', 'duration']
+        ordering = ['date']
+
+    def __str__(self):
+        return self.userHistory.username
+
+
 class ProcessorPoint(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     name = models.CharField(max_length=50)

@@ -1,12 +1,12 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import filters, permissions, viewsets
-from .serializers import UserSerializer, GroupSerializer, RegistrationSerializer, ProfileSerializer, ChargeSpotSerializer, ProcessorPointSerializer, ManagementSerializer
+from .serializers import UserSerializer, GroupSerializer, RegistrationSerializer, ProfileSerializer, ChargeSpotSerializer, ProcessorPointSerializer, ManagementSerializer, ChargeHistorySerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView
-from .models import UserProfile, ChargeSpot, ProcessorPoint, Management
+from .models import UserProfile, ChargeSpot, ChargeHistory, ProcessorPoint, Management
 from .permissions import UserIsOwnerPermissions, UserOnlyViewPermissions, UserIsOwnerUserPermissions
 from rest_framework import generics
 
@@ -36,6 +36,13 @@ class ProfileViewSet(viewsets.ModelViewSet):
 class ChargeSpotViewSet(viewsets.ModelViewSet):
     queryset = ChargeSpot.objects.all()
     serializer_class = ChargeSpotSerializer
+    permission_classes = [UserOnlyViewPermissions &
+                          permissions.IsAuthenticated]
+
+
+class ChargeHistoryViewSet(viewsets.ModelViewSet):
+    queryset = ChargeHistory.objects.all()
+    serializer_class = ChargeHistorySerializer
     permission_classes = [UserOnlyViewPermissions &
                           permissions.IsAuthenticated]
 

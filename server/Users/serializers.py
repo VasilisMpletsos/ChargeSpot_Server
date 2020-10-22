@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from .models import UserProfile, ChargeSpot, ProcessorPoint, Management
+from .models import UserProfile, ChargeSpot, ChargeHistory, ProcessorPoint, Management
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -9,9 +9,15 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         view_name='userprofile-detail'
     )
 
+    history = serializers.HyperlinkedRelatedField(
+        many=True,
+        queryset=ChargeHistory.objects.all(),
+        view_name='chargehistory-detail'
+    )
+
     class Meta:
         model = User
-        fields = ['url', 'username', 'email', 'profile', 'password']
+        fields = ['url', 'username', 'email', 'profile', 'history', 'password']
         # exclude = ['password'] is the same as fields = ['username', 'email']
         extra_kwargs = {
             'password': {'write_only': True}
@@ -28,6 +34,12 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = UserProfile
+        fields = '__all__'
+
+
+class ChargeHistorySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = ChargeHistory
         fields = '__all__'
 
 
